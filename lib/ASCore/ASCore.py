@@ -451,6 +451,10 @@ class TSengine(object):
         self.player = None
         self.files = dict()
         self.local = False
+        self._cache_default = False
+        self._param_cache_type = None
+        self._param_cache_size = None
+        self._cache_init()
         self.filename = None
         if xbmc.Player().isPlaying():
             xbmc.Player().stop()
@@ -528,13 +532,34 @@ class TSengine(object):
             xbmc.sleep(500)
         return False
 
+    def _cache_init(self):
+        cache_type = int(TSengine.addon.getSetting('сache_type'))
+        cache_size = int(TSengine.addon.getSetting('cache_size'))
+        if (cache_type == 0) and (cache_size == 200):
+            self._cache_default = True
+        else:
+            self._cache_default = False
+            cache_size = cache_size * 1048576
+            if cache_type == 0:
+                self._param_cache_type = '--live-cache-type disk'
+                self._param_cache_size = '--live-disk-cache-size ' + str(cache_size)
+            else:
+                self._param_cache_type = '--live-cache-type memory'
+                self._param_cache_size = '--live-mem-cache-size ' + str(cache_size)
+
     def _start_linux(self):
         import subprocess
         try:
-            subprocess.Popen(['acestreamengine', '--client-console'])
+            if self._cache_default:
+                subprocess.Popen(['acestreamengine', '--client-console'])
+            else:
+                subprocess.Popen(['acestreamengine', '--client-console', self._param_cache_type, self._param_cache_size])
         except:
             try:
-                subprocess.Popen('acestreamengine-client-console')
+                if self._cache_default:
+                    subprocess.Popen('acestreamengine-client-console')
+                else:
+                    subprocess.Popen(['acestreamengine-client-console', self._param_cache_type, self._param_cache_size])
             except: 
                 try:
                     xbmc.executebuiltin('XBMC.StartAndroidActivity("org.acestream.media")')
@@ -543,7 +568,7 @@ class TSengine(object):
                     self._progress.update(0, TSengine.ls(30014), ' ')
                     return False
         return True
-    
+
     def _start_windows(self):
         try:
             import _winreg

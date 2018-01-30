@@ -1,14 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<addon id='script.module.torrent.ts' version='0.7.3.5' name='AceStream client' provider-name='1orgar'>
-  <requires>
-    <import addon='xbmc.python' version='2.7.8'/>
-  </requires>
-    <extension point="xbmc.python.script" library="default.py">
-    	<provides>executable</provides>
-    </extension>
-    <extension point="xbmc.python.module" library="lib"/>
-  <extension point='xbmc.addon.metadata'>
-    <platform>all</platform>
-    <summary>AceStream client</summary>
-  </extension>
+<addon id='script.module.torrent.ts' version='0.7.3.5.001' name='AceStream client' provider-name='1orgar, YLLOW_DRAGON'>
+	<requires>
+		<import addon='xbmc.python' version='2.7.8'/>
+	</requires>
+	<extension point="xbmc.python.script" library="default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.python.module" library="lib"/>
+	<extension point='xbmc.addon.metadata'>		
+		<summary>AceStream client</summary>
+		<platform>all</platform>
+        <email>nkvoronov@gmail.com</email>
+        <source>https://github.com/nkvoronov/script.module.torrent.ts.git</source>
+	</extension>
 </addon>
